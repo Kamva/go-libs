@@ -3,9 +3,9 @@ package mongo
 import (
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
-	"kamva.ir/libraries/contracts"
-	"kamva.ir/libraries/exceptions"
-	"kamva.ir/libraries/translation"
+	"github.com/kamva/go-libs/contracts"
+	"github.com/kamva/go-libs/exceptions"
+	"github.com/kamva/go-libs/translation"
 	"github.com/kataras/iris"
 )
 

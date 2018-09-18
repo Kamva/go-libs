@@ -4,9 +4,9 @@ import (
 	"sync"
 	"fmt"
 	"github.com/kataras/iris"
-	"kamva.ir/libraries/exceptions"
-	"kamva.ir/libraries/translation"
-	"kamva.ir/libraries/sentry"
+	"github.com/kamva/go-libs/exceptions"
+	"github.com/kamva/go-libs/translation"
+	"github.com/kamva/go-libs/sentry"
 )
 
 type EventListener struct {

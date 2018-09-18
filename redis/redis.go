@@ -3,8 +3,8 @@ package redis
 import (
 	"github.com/gomodule/redigo/redis"
 	"github.com/kataras/iris"
-	"kamva.ir/libraries/exceptions"
-	"kamva.ir/libraries/translation"
+	"github.com/kamva/go-libs/exceptions"
+	"github.com/kamva/go-libs/translation"
 )
 
 type Redis struct {

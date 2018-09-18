@@ -9,8 +9,8 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"github.com/kataras/iris"
-	"kamva.ir/libraries/exceptions"
-	"kamva.ir/libraries/translation"
+	"github.com/kamva/go-libs/exceptions"
+	"github.com/kamva/go-libs/translation"
 )
 
 type Crypt struct {

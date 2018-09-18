@@ -2,7 +2,7 @@ package utils
 
 import (
 	"os"
-	"kamva.ir/libraries/exceptions"
+	"github.com/kamva/go-libs/exceptions"
 	"crypto/md5"
 	"encoding/hex"
 	"strings"

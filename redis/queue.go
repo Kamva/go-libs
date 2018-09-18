@@ -1,6 +1,6 @@
 package redis
 
-import "kamva.ir/libraries/contracts"
+import "github.com/kamva/go-libs/contracts"
 
 type Queue struct {
 	redis     *Redis

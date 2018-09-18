@@ -3,7 +3,7 @@ package translation
 import (
 	"net/url"
 	"fmt"
-	"kamva.ir/libraries/contracts"
+	"github.com/kamva/go-libs/contracts"
 )
 
 type ValidationTranslator struct {

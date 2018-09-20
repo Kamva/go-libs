@@ -64,3 +64,9 @@ func ValidateObjectId(instanceId string) bool {
 
 	return result
 }
+
+func GetTrustedAuthIssuers() []string {
+	trustedIssuers := GetEnv("AUTH_ISSUER", "kite")
+	trustedIssuers = strings.Replace(trustedIssuers, " ", "", -1)
+	return strings.Split(trustedIssuers, ",")
+}

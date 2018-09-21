@@ -12,7 +12,7 @@ type ValidationTranslator struct {
 }
 
 func (t ValidationTranslator) Translate(field string, tag string, params string) string {
-	query := t.taggable.GetTag(field, "translation")
+	query := t.taggable.GetTag(t.taggable, field, "translation")
 	mapping, _ := url.ParseQuery(query)
 	key := mapping[tag]
 

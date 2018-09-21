@@ -3,7 +3,7 @@ package contracts
 import "github.com/globalsign/mgo/bson"
 
 type Taggable interface {
-	GetTag(string, string) string
+	GetTag(interface{}, string, string) string
 }
 
 type RequestData interface {

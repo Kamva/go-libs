@@ -8,7 +8,7 @@ type ErrorBag struct {
 }
 
 func (b ErrorBag) Append(field string, value string) {
-	fieldName := b.taggable.GetTag(field, "json")
+	fieldName := b.taggable.GetTag(b.taggable ,field, "json")
 	b.errors[fieldName] = append(b.errors[fieldName], value)
 }
 func (b ErrorBag) GetErrors() interface{} {

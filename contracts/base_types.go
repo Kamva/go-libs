@@ -7,8 +7,8 @@ import (
 
 type BaseTaggable struct {}
 
-func (r BaseTaggable) GetTag(field string, tag string) string {
-	taggedField, _ := reflect.TypeOf(r).FieldByName(field)
+func (r BaseTaggable) GetTag(caller interface{}, field string, tag string) string {
+	taggedField, _ := reflect.TypeOf(caller).FieldByName(field)
 	return taggedField.Tag.Get(tag)
 }
 

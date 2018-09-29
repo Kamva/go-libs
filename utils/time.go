@@ -14,3 +14,7 @@ func NewDateTime() *DateTime {
 func (dt *DateTime) ToW3cString() string {
 	return dt.time.Format("2006-01-02T15:04:05-07:00")
 }
+
+func (dt *DateTime) Timestamp() int64 {
+	return dt.time.Unix()
+}

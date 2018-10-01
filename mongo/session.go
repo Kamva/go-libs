@@ -41,7 +41,6 @@ func NewSession(url string, db string, exceptionCode string) *Session {
 			Code:            exceptionCode,
 			StatusCode:      iris.StatusInternalServerError,
 		})
-
 	}
 
 	return &Session{

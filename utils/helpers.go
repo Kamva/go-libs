@@ -5,6 +5,7 @@ import (
 	"github.com/kamva/go-libs/exceptions"
 	"crypto/md5"
 	"encoding/hex"
+	"reflect"
 	"strings"
 	"regexp"
 )
@@ -69,4 +70,12 @@ func GetTrustedAuthIssuers() []string {
 	trustedIssuers := GetEnv("AUTH_ISSUER", "kite")
 	trustedIssuers = strings.Replace(trustedIssuers, " ", "", -1)
 	return strings.Split(trustedIssuers, ",")
+}
+
+func GetType(variable interface{}) string {
+	if t := reflect.TypeOf(variable); t.Kind() == reflect.Ptr {
+		return t.Elem().Name()
+	} else {
+		return t.Name()
+	}
 }

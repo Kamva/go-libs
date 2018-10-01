@@ -6,6 +6,8 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/core/errors"
 	"gopkg.in/olivere/elastic.v3"
+	"log"
+	"os"
 )
 
 type Client struct {
@@ -46,7 +48,25 @@ func (c *Client) handleError(err error) {
 	}
 }
 
-func NewClient(exceptionCode string, options ...elastic.ClientOptionFunc) *Client {
+func throwException(err error, exceptionCode string) {
+	panic(exceptions.Exception{
+		ResponseMessage: translation.Translate("internal_error"),
+		Message:         err.Error(),
+		Code:            exceptionCode,
+		StatusCode:      iris.StatusInternalServerError,
+	})
+}
+
+func NewClient(exceptionCode string, url string, options ...elastic.ClientOptionFunc) *Client {
+	defaultOptions := []elastic.ClientOptionFunc{
+		elastic.SetURL(url),
+		elastic.SetSniff(false),
+		elastic.SetErrorLog(log.New(os.Stderr, "[ELASTIC ERR] ", log.LstdFlags)),
+		elastic.SetInfoLog(log.New(os.Stdout, "[ELASTIC] ", log.LstdFlags)),
+	}
+
+	options = append(defaultOptions, options...)
+
 	client, err := elastic.NewClient(options...)
 
 	if err != nil {
@@ -57,13 +77,4 @@ func NewClient(exceptionCode string, options ...elastic.ClientOptionFunc) *Clien
 		client:    client,
 		issueCode: exceptionCode,
 	}
-}
-
-func throwException(err error, exceptionCode string) {
-	panic(exceptions.Exception{
-		ResponseMessage: translation.Translate("internal_error"),
-		Message:         err.Error(),
-		Code:            exceptionCode,
-		StatusCode:      iris.StatusInternalServerError,
-	})
 }

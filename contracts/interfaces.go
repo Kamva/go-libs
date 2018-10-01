@@ -10,8 +10,12 @@ type RequestData interface {
 	Taggable
 }
 
-type Pushable interface {
+type Serializable interface {
 	Serialize() string
+}
+
+type Pushable interface {
+	Serializable
 }
 
 type Scheme interface {

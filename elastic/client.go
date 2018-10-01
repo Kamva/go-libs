@@ -3,34 +3,42 @@ package elastic
 import (
 	"github.com/kamva/go-libs/exceptions"
 	"github.com/kamva/go-libs/translation"
+	"github.com/kamva/go-libs/utils"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/core/errors"
 	"gopkg.in/olivere/elastic.v3"
 	"log"
 	"os"
+	"strings"
 )
 
 type Client struct {
 	client    *elastic.Client
 	issueCode string
+	indexName string
+	typeName  string
 }
 
 func (c *Client) Index(data Type) {
+	c.setIndexAndType(data)
 	c.checkIndex(data)
 
-	_, err := c.client.Index().Index(data.GetIndexName()).
-		Type(data.GetTypeName()).
-		BodyJson(data.GetBody()).Do()
+	_, err := c.client.Index().Index(c.indexName).Type(c.typeName).BodyJson(data.GetBody()).Do()
 
 	c.handleError(err)
 }
 
+func (c *Client) setIndexAndType(data Type) {
+	c.indexName = c.getIndexName(data.GetIndex())
+	c.typeName = c.getTypeName(data)
+}
+
 func (c *Client) checkIndex(data Type) {
-	exists, err := c.client.IndexExists(data.GetIndexName()).Do()
+	exists, err := c.client.IndexExists(c.indexName).Do()
 
 	if !exists {
-		createIndex, err := c.client.CreateIndex(data.GetIndexName()).
-			BodyString(data.GetIndexMapping()).Do()
+		createIndex, err := c.client.CreateIndex(c.indexName).
+			BodyString(data.GetIndex().GetMapping().Serialize()).Do()
 
 		c.handleError(err)
 
@@ -46,6 +54,28 @@ func (c *Client) handleError(err error) {
 	if err != nil {
 		throwException(err, c.issueCode)
 	}
+}
+
+func (c *Client) getIndexName(index Index) string {
+	typeName := utils.ToSnake(utils.GetType(index))
+	nameParts := strings.Split(typeName, "_")
+
+	if nameParts[len(nameParts)] != "index" {
+		c.handleError(errors.New("Invalid index name"))
+	}
+
+	return strings.Join(nameParts[:len(nameParts)-1], "_")
+}
+
+func (c *Client) getTypeName(data Type) string {
+	typeName := utils.ToSnake(utils.GetType(data))
+	nameParts := strings.Split(typeName, "_")
+
+	if nameParts[len(nameParts)] != "type" {
+		c.handleError(errors.New("Invalid type name"))
+	}
+
+	return strings.Join(nameParts[:len(nameParts)-1], "_")
 }
 
 func throwException(err error, exceptionCode string) {

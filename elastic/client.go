@@ -60,7 +60,7 @@ func (c *Client) getIndexName(index Index) string {
 	typeName := utils.ToSnake(utils.GetType(index))
 	nameParts := strings.Split(typeName, "_")
 
-	if nameParts[len(nameParts)] != "index" {
+	if nameParts[len(nameParts)-1] != "index" {
 		c.handleError(errors.New("Invalid index name"))
 	}
 
@@ -71,7 +71,7 @@ func (c *Client) getTypeName(data Type) string {
 	typeName := utils.ToSnake(utils.GetType(data))
 	nameParts := strings.Split(typeName, "_")
 
-	if nameParts[len(nameParts)] != "type" {
+	if nameParts[len(nameParts)-1] != "type" {
 		c.handleError(errors.New("Invalid type name"))
 	}
 

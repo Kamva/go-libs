@@ -1,21 +1,27 @@
 package concurrency
 
 import (
-	"sync"
 	"fmt"
-	"github.com/kataras/iris"
 	"github.com/kamva/go-libs/exceptions"
-	"github.com/kamva/go-libs/translation"
 	"github.com/kamva/go-libs/sentry"
+	"github.com/kamva/go-libs/translation"
+	"github.com/kataras/iris"
+	"sync"
 )
 
+type Listener func(*Event, interface{})
+
+type Rollback func(interface{})
+
+type EventMap map[string]EventListener
+
 type EventListener struct {
-	Listener []func(*Event, interface{})
-	RollBack func(interface{})
+	Listener []Listener
+	RollBack Rollback
 }
 
 type Event struct {
-	eventMap  map[string]EventListener
+	eventMap  EventMap
 	issueCode string
 	waitGroup *sync.WaitGroup
 	channel   chan exceptions.RoutineException
@@ -80,7 +86,7 @@ func (e *Event) RecoverRoutinePanic(caller string, critical bool) {
 	}
 }
 
-func NewEvent(eventMap map[string]EventListener, exceptionCode string) *Event {
+func NewEvent(eventMap EventMap, exceptionCode string) *Event {
 	return &Event{
 		eventMap:  eventMap,
 		issueCode: exceptionCode,
